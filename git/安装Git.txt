@@ -1,0 +1,46 @@
+####可能要安装的扩展
+yum -y install zlib-devel perl-ExtUtils-MakeMaker asciidoc xmlto openssl-devel
+
+####下载解压
+wget -O git.zip https://github.com/git/git/archive/master.zip
+unzip git.zip
+cd git-master
+
+####创建安装目录
+mkdir -p /usr/local/git
+
+####编译安装
+ntpdate time.nist.gov				#可能需要更新时间
+autoconf
+./configure --prefix=/usr/local/git
+make
+make install
+
+####建立软链接
+ln -s /usr/local/git/bin/git /usr/bin/
+
+或
+
+vim /etc/profile
+
+文件末尾加上：
+PATH=$PATH:/usr/local/git/bin
+export PATH
+
+执行
+source /etc/profile
+
+查看是否成功
+echo $PATH
+
+
+####查看版本
+git --version
+
+
+
+/////////////////////////////////////////
+出现以下错误：
+make: Warning: File `config.mak.uname' has modification time 8.8e+05 s in the future
+更新下时间
+ntpdate time.nist.gov

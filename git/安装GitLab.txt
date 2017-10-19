@@ -1,0 +1,44 @@
+####使用国内镜像安装
+
+vim /etc/yum.repos.d/gitlab-ce.repo
+
+添加以下内容：
+
+[gitlab-ce]
+name=gitlab-ce
+baseurl=http://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el6
+repo_gpgcheck=0
+gpgcheck=0
+enabled=1
+gpgkey=https://packages.gitlab.com/gpg.key
+
+
+####安装步骤：
+
+# 安装依赖包
+sudo yum install curl openssh-server openssh-clients postfix cronie
+# 启动 postfix 邮件服务
+sudo service postfix start
+# 检查 postfix
+sudo chkconfig postfix on
+# 安装 GitLab 社区版
+sudo yum install gitlab-ce
+# 初始化 GitLab
+sudo gitlab-ctl reconfigure
+
+
+####修改访问域名
+vim /etc/gitlab/gitlab.rb
+
+找到：
+external_url 'http://gitlab.home.com:8800'
+
+重启配置
+sudo gitlab-ctl reconfigure
+
+开放端口
+/sbin/iptables -I INPUT -p tcp --dport 8800 -j ACCEPT
+iptables -F
+
+####添加本地host映射
+192.168.11.133 gitlab.home.com

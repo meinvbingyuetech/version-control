@@ -1,0 +1,77 @@
+yum -y install git
+
+#创建git组和用户
+groupadd git               
+adduser git -g git
+
+##创建存放客户端公钥的authorized_keys
+cd /home/git/
+mkdir .ssh
+chmod 700 .ssh
+touch .ssh/authorized_keys
+chmod 600 .ssh/authorized_keys
+
+chown -R git:git /home/git/.ssh
+
+vim /home/git/.ssh/authorized_keys   ----->导入客户端公钥后保存，一行一个
+
+##创建总仓库
+cd /home
+mkdir gitrepo
+chown git:git gitrepo/
+cd gitrepo
+
+##初始化单个项目的git裸仓库并赋予git权限					------------------------------>常用
+git init --bare project.git
+chown -R git:git project.git
+
+##设置ssh服务器允许空密码登陆
+vim /etc/ssh/sshd_config
+修改 PermitEmptyPasswords yes
+service sshd restart
+
+##修改权限，不允许git用户登录shell
+vim /etc/passwd
+修改 git:x:1001:1001:,,,:/home/git:/bin/bash  为   git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+
+##测试
+ssh git@192.168.11.133
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+####利用Hook钩子，部署代码到生产环境
+
+chown -R git:git /home/wwwroot/project
+
+cd /home/gitrepo/project.git/
+cd hooks/
+
+touch post-receive
+vim post-receive
+git --work-tree=/home/wwwroot/project/ --git-dir=/home/gitrepo/project.git/ checkout -f       ###注意检查，看git命令会不会少
+
+chmod +x post-receive
+chown git:git post-receive
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+出现以下信息是正常，说明连上了服务器
+fatal: What do you think I am? A shell?
+Connection to 192.168.11.133 closed.
+
+##客户端克隆仓库
+git clone git@192.168.11.133:/home/gitrepo/project.git
+
+cd project
+touch readme.md
+git add .
+git commit -m 'add readme.md'
+git push origin master
+
+git branch
+
+其他关联请移步：gitlab-案例.txt
+
+注意：不要直接git pull 或 git push 或 git fetch ，可能会出错；先提交一个readme文件上去保证能走下去先
+

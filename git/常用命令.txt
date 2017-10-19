@@ -1,0 +1,298 @@
+/*
+|--------------------------------------------------------------------------
+| 注意事项、原则
+|--------------------------------------------------------------------------
+|
+| 很多命令都是以commit后为前提的，所以要经常查看状态git status，没有提交要
+| 记得提交
+|
+| 有时比如你在A分支，但是你没有commit，然后你切换到B分支，这样A分支修改的
+| 文件会切换到B分支，这可能不是你想要的结果，所以切换分支之前切记git status
+| 查看一下状态，确保已经commit
+| 
+| master		#主分支
+| dev         	#开发分支
+| issue       	#问题分支
+| bug			#bug分支
+| feature		#新功能分支
+| 
+*/
+
+#查看git所有命令
+git
+
+#查看版本
+git --version
+
+#当前用户的Git配置文件放在用户主目录下的一个隐藏文件.gitconfig中
+cd ~
+cat .gitconfig
+
+
+#查看当前仓库配置信息
+vim .git/config
+
+git config --global user.name meinvbingyue
+git config --global user.email meinvbingyue@qq.com
+git config --global color.ui true
+git config --list
+
+git init
+
+git clone https://test.git
+
+#查看状态(经常查看)
+git status
+git status -s			#暂时理解为查看staging area的状态
+
+git add 1.txt			#从working directory提交到staging area（添加文件到暂存区）
+git add 2.txt 3.txt
+git add .
+git add --all
+
+git commit -m '注释'		#从staging area提交到history
+git commit -am '注释'		#从working directory提交到history   (-a、-m的集合)
+
+
+
+echo '*.pdf' > .gitignore	#忽略显示以pdf为后缀的文件（创建一个.gitignore的文件，内容为"*.pdf"）
+git add .gitignore
+git commit .gitignore
+
+git diff				#查看working directory和staging area的区别
+git diff --staged		#查看history和staging area的区别
+git diff HEAD			#查看history和working directory的区别
+git diff HEAD -- 1.txt	#查看工作区和版本库里面最新版本的区别
+
+git diff --stat HEAD	#简要提示
+
+
+
+#跳转版本  ->在Git中，用HEAD表示当前版本，上一个版本就是HEAD^，上上一个版本就是HEAD^^，往上100个版本写成HEAD~100
+git reset --hard HEAD^
+git reset --hard 3628164
+
+git reset 1.txt			#覆盖、重置-----将history的最新版本覆盖staging area
+git checkout 1.txt		#覆盖、重置-----将staging area的最新版本覆盖working directory
+git checkout HEAD 1.txt #覆盖、重置-----将history的最新版本覆盖working directory
+git checkout -- 1.txt	#把工作区的修改撤销掉
+git checkout .			#把工作区的全部修改撤销掉
+git reset HEAD 1.txt	#把暂存区的修改撤销掉，重新放回工作区（即执行了 git add 后台）
+
+
+
+git rm 1.txt			#删除文件、working directory和staging area立马都发生了变化
+git commit -m 'delete file'
+
+git rm --cached 1.txt		#删除staging area里的文件（保留working directory里的文件）
+
+
+
+git mv 1.txt 2.txt		#重命名、working directory和staging area立马都发生了变化
+git commit -m 'rename'
+
+
+
+/**********************************************************************************/
+#查看快照历史（查看暂存区历史记录）
+git stash list
+
+#创建快照 比如v1是上线版本，正在开发v2升级版本，代码写到一半，接到命令说要在v1上修改一些代码适应新情况，这时候就用这个命令，将现有的所有东西打包好，放到一边，拿出v1版本来修改、提交。
+git stash
+
+#恢复快照并删除
+git stash apply
+git stash drop
+
+#恢复快照的同时删除（将暂存区展开，继续开发）
+git stash pop
+
+#恢复指定快照
+git stash apply stash@{0}
+
+/**********************************************************************************/
+
+#查看提交历史(以便确定要回退到哪个版本)
+git log
+git log --pretty=oneline
+git log --graph --pretty=oneline --abbrev-commit	#--graph命令可以看到分支合并图
+git log -1                                          #最近一次的提交
+
+#查看命令历史(以便确定要回到未来的哪个版本)
+git reflog
+
+/**********************************************************************************/
+git cat-file -t HEAD		#查看对象的类型(commit、tree)
+git cat-file -t HEAD~1
+git cat-file -t 哈希码
+
+git cat-file -p HEAD		$查看对象里的内容
+git cat-file -p HEAD~1
+git cat-file -p 哈希码
+
+git cat-file -p HEAD~1:1.txt
+git show HEAD~1:1.txt
+
+
+/**********************************************************************************/
+git rev-parse HEAD	#查看相应对象的哈希码
+git rev-parse master	#等价于上面的效果
+
+git rev-parse HEAD~
+git rev-parse master~
+
+git rev-parse HEAD~4^{tree}
+git rev-parse HEAD~4:1.txt
+
+
+/**********************************************************************************/
+git branch		#查看分支情况，*号标识当前分支
+git branch -a       #查看所有分支，包括远程分支
+
+git branch dev		#创建新分支test
+git checkout dev	#切换分支
+git checkout -b dev    #创建并切换分支
+git branch -d dev	#删除分支
+
+git checkout -b dev origin/dev            #切换到dev分支，并关联远程的dev分支
+git checkout --track origin/dev           #同上。
+
+git branch --set-upstream dev origin/dev	#指定本地dev分支与远程origin/dev分支的链接
+
+git merge test		#合并分支
+
+/**********************************************************************************/
+
+#将dev分支合并到当前分支
+git merge dev
+git merge --no-ff -m "注释信息" dev       #--no-ff参数，表示禁用Fast forward，即普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+
+#删除分支
+git branch -d dev
+
+#强制删除分支，比如有提交的情况下
+git branch -D dev
+
+#删除远程分支
+git push origin :dev
+
+/**********************************************************************************/
+#拉取最新提交，一般在push之前都先拉一下最新代码，在本地合并，如果有冲突，先解决冲突，然后在推送
+git pull				
+
+语法：git push [远程名] [本地分支]:[远程分支]，如果省略 [本地分支]，那就等于是在说“在这里提取空白然后把它变成[远程分支]
+
+#将当前分支，推送到远程的 master分支上
+git push origin master					
+
+#先关联远程仓库的分支，然后就能简约push
+git push --set-upstream origin dev
+git push								
+
+
+#查看远程库的信息
+git remote
+
+#显示更详细的信息，显示可以抓取和推送的origin的地址
+git remote -v	
+
+#可以将远程分支信息获取到本地，如果别人推送的新分支
+git fetch
+
+# 删除远程仓库链接
+git remote remove origin
+# 增加远程仓库链接. （vim .git/config）
+git remote add origin git@github.com:meinvbingyuetech/laravel.git
+git remote add origin https://github.com/meinvbingyuetech/laravel.git
+
+/**********************************************************************************/
+history
+staging area （cache / index ）
+working directory （命令行ls 看到的就是这个区，可以理解为真实物理文件区，先这么理解着吧）
+
+
+HEAD相当于游标，指向最新的那个commit对象
+HEAD~=前一个commit对象，也可以用HEAD~1
+HEAD~2=前两个commit对象
+
+/**********************************************************************************/
+#出现冲突，要先解决冲突
+
+<<<<<<< HEAD
+当前内容
+=======
+过往内容
+>>>>>>>
+
+/**********************************************************************************/
+#查看所有标签
+git tag
+
+#查看标签信息
+git show v0.9
+
+#为当前分支打标签
+git tag v1.0
+
+#为过往提交打标签
+git log --pretty=oneline --abbrev-commit
+git tag v0.9 6224937							#6224937是commit id
+
+#创建带有说明的标签
+git tag -a v0.1 -m "version 0.1 released" 3628164	#用-a指定标签名，-m指定说明文字
+
+#用私钥签名一个标签，签名采用PGP签名，因此，必须首先安装gpg（GnuPG），如果没有找到gpg，或者没有gpg密钥对，就会报错，如果报错，请参考GnuPG帮助文档配置Key。
+git tag -s v0.2 -m "signed version 0.2 released" fec145a
+
+#删除标签
+git tag -d v0.1
+
+#推送某个标签到远程
+git push origin v1.0
+
+
+#一次性推送全部尚未推送到远程的本地标签
+git push origin --tags
+
+#删除远程标签
+git tag -d v0.9
+git push origin :refs/tags/v0.9
+
+/**********************************************************************************/
+#配置全局别名
+
+git config --global alias.st status        # git st
+
+git config --global alias.ck checkout
+git config --global alias.com commit
+git config --global alias.br branch
+git config --global alias.ll pull
+git config --global alias.pu push
+
+git config --global alias.unstage 'reset HEAD'	# git unstage 1.txt -> git reset HEAD 1.txt
+
+
+#配置当前仓库别名
+vim .git/config
+
+在最后添加
+[alias]
+    last = log -1
+    co = checkout
+    ci = commit
+    br = branch
+    st = status
+
+
+
+/**********************************************************************************/
+#忽略特殊文件  https://github.com/github/gitignore
+在Git工作区的根目录下创建一个特殊的.gitignore文件
+
+#强制添加到Git
+git add -f App.class
+
+#检测哪个规则写错了
+git check-ignore -v App.class
+
+
