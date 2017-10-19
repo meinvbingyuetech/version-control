@@ -11,18 +11,16 @@
 
 如果没有.ssh目录，打开Shell（Windows下打开Git Bash），创建SSH Key:
 ```
-ssh-keygen -t rsa -C "meinvbingyue@qq.com"
+$ ssh-keygen -t rsa -C "meinvbingyue@qq.com"
+
+$ cd ~/.ssh/
+$ ll -a
 ```
 [windows查找git公钥路径](http://pan.baidu.com/s/1hr9fxyO)
 
 登陆GitHub，打开“Account settings”，“SSH Keys”页面：
 然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容（有换行不怕）
 [示例](http://pan.baidu.com/s/1i5kWY6T)
-
-```
-$ cd ~/.ssh/
-$ ll -a
-```
 
 ---
 
