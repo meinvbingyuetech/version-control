@@ -184,7 +184,8 @@ git pull
 
 #将当前分支，推送到远程的 master分支上
 git push origin master					
-
+git push origin master:master ---不行可以试试这样
+ 
 #先关联远程仓库的分支，然后就能简约push
 git push --set-upstream origin dev
 git push								
