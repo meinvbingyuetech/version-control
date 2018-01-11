@@ -1,6 +1,6 @@
 - https://github.com/
-- meinv****yue/mei***ue@qq.com
-- ja***7***02
+- meinv*yue/mei*ue@qq.com
+- ja*7*02
 
 
 **强烈建议用SSH地址拉项目**
