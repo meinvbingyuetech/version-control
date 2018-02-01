@@ -3,6 +3,12 @@
 git log
 git reset --hard 2a4bad9f499039f2b1309f3c15f0d1b56ee70722
 ```
+
+# 强制将本地的修改覆盖了远程仓库的版本
+```
+git push -f origin master
+```
+
 # 一些坑
 
 当我们需要删除暂存区或分支上的文件, 同时工作区也不需要这个文件了, 可以使用
