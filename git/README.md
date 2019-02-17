@@ -1,3 +1,10 @@
+# 创建新分支，同时在远程创建，并关联本地
+```
+git ck -b dev
+git push origin dev
+git branch -u=origin/dev dev   或   git branch --set-upstream-to=origin/dev dev
+```
+
 # 强制回退
 ```
 git log
