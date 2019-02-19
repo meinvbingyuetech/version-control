@@ -2,7 +2,7 @@
 ```
 git ck -b dev
 git push origin dev
-git branch -u=origin/dev dev   或   git branch --set-upstream-to=origin/dev dev
+git branch --set-upstream-to=origin/dev dev
 ```
 
 # 强制回退
