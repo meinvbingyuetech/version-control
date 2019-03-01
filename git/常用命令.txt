@@ -100,6 +100,8 @@ git stash list
 #创建快照 比如v1是上线版本，正在开发v2升级版本，代码写到一半，接到命令说要在v1上修改一些代码适应新情况，这时候就用这个命令，将现有的所有东西打包好，放到一边，拿出v1版本来修改、提交。
 git stash
 
+git stash save "test version"  # 推荐这种，可以记录快照信息
+
 #恢复快照并删除
 git stash apply
 git stash drop
