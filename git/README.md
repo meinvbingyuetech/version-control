@@ -1,3 +1,14 @@
+# 配置全局别名
+```
+git config --global alias.st status        # git st
+
+git config --global alias.ck checkout
+git config --global alias.com commit
+git config --global alias.br branch
+git config --global alias.ll pull
+git config --global alias.pu push
+```
+
 # 创建新分支，同时在远程创建，并关联本地
 ```
 git ck -b dev
