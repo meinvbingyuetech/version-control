@@ -20,12 +20,11 @@ git init
 git add 1.txt
 git commit -m "add 1.txt"
 git remote add origin git@github.com:meinvbingyueweb/test2.git         #远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
-git push -u origin master											   #实际上是把当前分支master推送到远程。
-																	   #由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+git push -u origin master		#实际上是把当前分支master推送到远程。由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 																	   
-git push origin master			#将当前分支，推送到远程的 master分支上
+git push origin master	 #将当前分支，推送到远程的 master分支上
 
-git push						#如果想要这样用，可能要先关联远程仓库的分支 git push --set-upstream origin dev
+git push	         #如果想要这样用，可能要先关联远程仓库的分支 git push --set-upstream origin dev
 
 ------------------------------------------------
 C、
