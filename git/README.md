@@ -1,4 +1,4 @@
-[HX文档](https://hx.dcloud.net.cn/Tutorial/SourceControl/Git/README)
+[HBuilderX 整理文档](https://hx.dcloud.net.cn/Tutorial/SourceControl/Git/README)
 
 # 配置全局别名
 ```
